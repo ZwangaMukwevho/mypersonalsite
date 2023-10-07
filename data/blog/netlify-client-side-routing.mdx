@@ -1,0 +1,57 @@
+---
+title: Mono-Repo vs. Separate Repos The Codebase Dilemma
+tags: ['mono-repo', 'architecture']
+date: '2023-10-07'
+images: ['/static/images/posts/backlit-computer.jpg']
+authors: ['zwanga']
+draft: false
+canonicalUrl: https://www.google.com
+---
+
+<Image
+  className="w-full rounded-xl"
+  alt="backlit computer"
+  src="/static/images/posts/rock_stack.jpg"
+  layout="responsive"
+  width={450}
+  height={250}
+/>
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+I recently started a new role at a new company, and the set-up of the repos was a big shift. Moving from a microservices architecture to more of a monolith architecture.
+This has given me time to reflect between the two, and write down this blog.
+
+I like to think  the choice between a mono-repo and separate repos is akin to deciding between a cozy one-bedroom apartment or a spacious multi-room house. Both have their perks, and your choice ultimately depends on your project's unique needs and your team's preferences
+
+### Mono-Repo (Monolithic Repository):
+
+A mono-repo is like having all your files and projects stored in a single, big folder. It's like keeping all your clothes, books, and toys in one giant drawer at home. In software development, it means putting all the code for your entire project, including different parts and components, in a single place.
+
+Mono-Repo: The All-in-One Marvel
+
+Unified Codebase: A mono-repo consolidates your entire project into one repository. This centralized approach fosters consistency, simplifies code sharing, and streamlines dependency management. No more switching between multiple repos.
+Simplified Dependency Management: Mono-repos simplify dependency management. You can ensure that all parts of your project use compatible libraries and dependencies, reducing the risk of version conflicts that can plague separate repos.
+
+Challenges in Mono-Repos
+
+Complexity: As your mono-repo expands, maintaining a clear structure and naming conventions becomes crucial to prevent chaos.
+Longer Build Times: With growth, build times may increase significantly, potentially impacting developer productivity.
+"Monolith" Syndrome: Poor management can lead to a monolithic codebase that's hard to untangle, hampering scalability.
+
+
+### Separate Repos (Separate Repositories):
+
+On the other hand, separate repos are like organizing your stuff into different boxes or drawers. In software terms, it means dividing your project into smaller parts, with each part having its own dedicated place or "repository." Each box or drawer (repository) contains a specific part of your project, and different teams or developers can work on these parts independently.
+
+Separate Repos: The Isolated 
+
+Scalability: Individual repos can be scaled independently. You can allocate resources and attention where needed without affecting other projects, making it easier to manage growth.
+Isolation: Separate repos offer isolation for distinct projects or components. This is particularly useful for large organizations juggling diverse projects. Each repo operates independently, reducing interference.
+
+Challenges in Separate Repos
+Dependency Nightmares: Managing dependencies across multiple repos can become a logistical challenge, requiring vigilance to ensure compatibility.
+Smaller Builds: Smaller, separate repos often boast shorter build times. This translates to faster development cycles and quicker feedback, keeping developers productive and focused.
+Code Duplication: Similar code may be duplicated across repos, leading to maintenance issues and potential inconsistencies.
+
+Ultimately, the choice between a mono-repo and separate repos hinges on your project's intricacies, team size, and development philosophy. Some find solace in the unity of a mono-repo, while others prefer the freedom of separate repos. Whatever you choose, remember that the success of your development efforts depends more on how well you manage and maintain your chosen structure than the structure itself.
