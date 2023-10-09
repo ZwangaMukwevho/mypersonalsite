@@ -14,7 +14,6 @@ import { useEffect } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import LayoutWrapper from '@/components/LayoutWrapper'
 import { ClientReload } from '@/components/ClientReload'
-import ErrorBoundary from '@/components/ErrorBoundary'
 import * as ga from '../lib/ga'
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -49,11 +48,9 @@ export default function App({ Component, pageProps }) {
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
       {isDevelopment && isSocket && <ClientReload />}
-      <ErrorBoundary>
-        <LayoutWrapper>
-          <Component {...pageProps} />
-        </LayoutWrapper>
-      </ErrorBoundary>
+      <LayoutWrapper>
+        <Component {...pageProps} />
+      </LayoutWrapper>
     </ThemeProvider>
   )
 }
