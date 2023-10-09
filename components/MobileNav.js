@@ -8,6 +8,7 @@ const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
 
   const onToggleNav = () => {
+    console.log("clicked toggleNave")
     setNavShow((status) => {
       if (status) {
         document.body.style.overflow = 'auto'
