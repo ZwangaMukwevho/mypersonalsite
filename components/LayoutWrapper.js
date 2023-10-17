@@ -43,10 +43,10 @@ const LayoutWrapper = ({ children }) => {
             <ThemeSwitch />
             <MobileNav />
           </div>
-          <div>
-            <MobileNav />
-          </div>
         </header>
+        <div>
+          <MobileNav />
+        </div>
         <main className="mb-auto">{children}</main>
         <Footer />
       </div>
