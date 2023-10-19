@@ -22,8 +22,11 @@ const NavBar = () => {
         <div className="border-primary absolute left-0 right-0 top-16 bg-white p-2 opacity-95 shadow-md duration-300 ease-in-out">
           <ul className="text-black">
             {headerNavLinks.map((link) => (
-              <li className="border-primary border-b py-2 text-2xl font-bold tracking-widest">
-                <Link key={link.title} href={link.href} onClick={toggleDropdown}>
+              <li
+                key={link.title}
+                className="border-primary border-b py-2 text-2xl font-bold tracking-widest"
+              >
+                <Link href={link.href} onClick={toggleDropdown}>
                   {' '}
                   {link.title}
                 </Link>
