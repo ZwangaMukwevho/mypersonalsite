@@ -42,12 +42,13 @@ const LayoutWrapper = ({ children }) => {
               ))}
             </div>
             {/* <ThemeSwitch /> */}
-            <NavBar />
           </div>
         </header>
-        <div></div>
+        <div>
+          <NavBar />
+        </div>
         <main className="mb-auto">{children}</main>
-        pm <Footer />
+        <Footer />
       </div>
     </SectionContainer>
   )
