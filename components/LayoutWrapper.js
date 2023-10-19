@@ -7,6 +7,7 @@ import Footer from './Footer'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import NavBar from './NavBar'
+import Navigation from './Navigation'
 
 const LayoutWrapper = ({ children }) => {
   return (
@@ -45,7 +46,7 @@ const LayoutWrapper = ({ children }) => {
           </div>
         </header>
         <div>
-          <NavBar />
+          <Navigation />
         </div>
         <main className="mb-auto">{children}</main>
         <Footer />

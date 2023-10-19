@@ -26,10 +26,7 @@ const NavBar = () => {
                 key={link.title}
                 className="border-primary border-b py-2 text-2xl font-bold tracking-widest"
               >
-                <Link href={link.href} onClick={toggleDropdown}>
-                  {' '}
-                  {link.title}
-                </Link>
+                <Link href={link.href}>{link.title}</Link>
               </li>
             ))}
           </ul>
