@@ -1,0 +1,59 @@
+---
+title: The Gmail AI attachment document classifier
+tags: ['Golang', 'ChatGPT', 'Google APIs']
+date: '2023-11-27'
+images: ['/static/images/posts/backlit-computer.jpg']
+authors: ['zwanga']
+draft: false
+canonicalUrl: https://www.google.com
+---
+
+<Image
+  className="w-full rounded-xl"
+  alt="backlit computer"
+  src="/static/images/posts/AI.jpg"
+  layout="responsive"
+  width={450}
+  height={250}
+/>
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+Earlier this month (November 2023) a friend of mine mentioned they struggled organising their work, by this I mean they have 3 different note taking apps, they do not have a central place where they keep they're documents and so on. The latter really struck a nerve, a friend of mine as well had specifically mentioned they'd also want to have a system that would automatically save and classify all the documents they send via email for better management.
+
+Which is why I build this mini-application to read my Gmail, if there's an attachment on a specific email automatically upload the attachment to my Google Drive to a specific subdirectory. Which directory the attachment is uploaded is determined by what the email subject and the name of the attachment. 
+
+An example of this would be an email with subjectz `Booking Receipt Email #12NIG5` and attachment name `Booking Receipt Email #12NIG5` will be uploaded to the finance subdirectory and not health subdirectory.
+
+
+### Setup:
+
+The code for this is available on my personal github on [doc-classifier](https://github.com/ZwangaMukwevho/doc-classification) .
+
+* Go ahead and close this to your local, virtual machine or wherever. (I persoanlly use an AWS EC2 instance to run the project)
+Ow and you'll definately need Golang installed on that specific machine to run the code [Golang Installation](https://go.dev/doc/install). (Maybe an extension of this is getting it to run on a Docker Container)
+
+* The next step is to setup the Gdrive directories in which the documents will be uploaded in when they are classifeed. Login to your Gdrive and make new directories.
+I personally have 8 directories which are:
+
+```1. Education, 2. Entertainment, 3. Finance, 4.Health, 5.Home, 6.Personal, 7.Work, 8.Default```
+
+(If the document can't be classified it ends up in the default folder)
+
+
+
+### Separate Repos (Separate Repositories):
+
+On the other hand, separate repos are like organizing your stuff into different boxes or drawers. In software terms, it means dividing your project into smaller parts, with each part having its own dedicated place or "repository." Each box or drawer (repository) contains a specific part of your project, and different teams or developers can work on these parts independently.
+
+Separate Repos: The Isolated 
+
+Scalability: Individual repos can be scaled independently. You can allocate resources and attention where needed without affecting other projects, making it easier to manage growth.
+Isolation: Separate repos offer isolation for distinct projects or components. This is particularly useful for large organizations juggling diverse projects. Each repo operates independently, reducing interference.
+
+Challenges in Separate Repos
+Dependency Nightmares: Managing dependencies across multiple repos can become a logistical challenge, requiring vigilance to ensure compatibility.
+Smaller Builds: Smaller, separate repos often boast shorter build times. This translates to faster development cycles and quicker feedback, keeping developers productive and focused.
+Code Duplication: Similar code may be duplicated across repos, leading to maintenance issues and potential inconsistencies.
+
+Ultimately, the choice between a mono-repo and separate repos hinges on your project's intricacies, team size, and development philosophy. Some find solace in the unity of a mono-repo, while others prefer the freedom of separate repos. Whatever you choose, remember that the success of your development efforts depends more on how well you manage and maintain your chosen structure than the structure itself.
