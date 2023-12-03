@@ -2,7 +2,7 @@
 title: The Gmail AI attachment document classifier
 tags: ['Golang', 'ChatGPT', 'Google APIs']
 date: '2023-11-27'
-images: ['/static/images/posts/backlit-computer.jpg']
+images: ['/static/images/posts/AI.jpg']
 authors: ['zwanga']
 draft: false
 canonicalUrl: https://www.google.com
@@ -25,35 +25,99 @@ Which is why I build this mini-application to read my Gmail, if there's an attac
 
 An example of this would be an email with subjectz `Booking Receipt Email #12NIG5` and attachment name `Booking Receipt Email #12NIG5` will be uploaded to the finance subdirectory and not health subdirectory.
 
+### Project and OpenAI Setup
+The code for this is available on my personal github on [doc-classifier](https://github.com/ZwangaMukwevho/doc-classification). Clone the code to your machine. (I am running my code on an EC2 instance)
 
-### Setup:
+```sh
+git clone https://github.com/ZwangaMukwevho/doc-classification
+```
 
-The code for this is available on my personal github on [doc-classifier](https://github.com/ZwangaMukwevho/doc-classification) .
+1. Go installation is required for this project. Setup can be found on. [Golang Installation](https://go.dev/doc/install). (Maybe an extension of this is getting it to run on a Docker Container)
 
-* Go ahead and close this to your local, virtual machine or wherever. (I persoanlly use an AWS EC2 instance to run the project)
-Ow and you'll definately need Golang installed on that specific machine to run the code [Golang Installation](https://go.dev/doc/install). (Maybe an extension of this is getting it to run on a Docker Container)
+2. You will also be required to setup an OpenAI acount. In order to set it up, create an account with openai. and navigate to the [api-keys](https://platform.openai.com/api-keys) to create the api key. Create a `.env` file and paste your api key in `.env` file.
+```sh
+touch .env
+```
 
-* The next step is to setup the Gdrive directories in which the documents will be uploaded in when they are classifeed. Login to your Gdrive and make new directories.
+3. inside the .env the key should look like (Where `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` is your `api-key`):
+  ```.env
+    OPENAI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+  ```
+
+### Google Setup
+* Since this project using Google API's and Service which uses `OAuth 2.0` for authentication. The steps below will outline setting this up.
+1. Set up an account with the Google Cloud Platform from [here](https://cloud.google.com/gcp/?utm_source=google&utm_medium=cpc&utm_campaign=emea-za-all-en-dr-bkws-all-all-trial-b-gcp-1011340&utm_content=text-ad-none-any-DEV_c-CRE_652004167888-ADGP_Hybrid+%7C+BKWS+-+BRO+%7C+Txt+~+GCP+~+General%23v7-KWID_43700075712544033-kwd-312548250440-userloc_1028745&utm_term=KW_cloud.google-NET_g-PLAC_&&gad_source=1&gclid=EAIaIQobChMI0N7-5pDqggMVN5FQBh0fbQArEAAYASAAEgKwEPD_BwE&gclsrc=aw.ds)
+2. Once in the home page, open the lunchbar menu on your top left, Navigate to `APIs & Services` then `Enabled APIs & Services`.
+
+
+<Image
+  className="w-full rounded-xl"
+  alt="backlit computer"
+  src="/static/images/posts/google_api_services.png"
+  layout="responsive"
+  width={250}
+  height={150}
+/>
+
+
+3. This will prompt you to choose a project. If you don't have one create one or use an existing one.
+4. Go to the `Credentials` tab (Can be seen on image on step 2), then click the `+ CREATE CREDENTIALS` tab then choose `OAuth Client ID`.
+5. When prompted for application type choose `Desktop App` and Give it a name.
+6. Click `Create` then download OAuth2.0 credentials file to the root folder of your project.
+8. Create another `.env` file inside the `setup` folder and add content below. Where GOOGLE_AUTH_FILE is the name of the OAuth2.0 Credentials file from above.
+(i.e replace `google_api_services.png` with the name of your file)
+```sh
+GOOGLE_AUTH_FILE=name_of_oath2.0_file
+GMAIL_TOKEN_FILE=token_gmail.json
+G_DRIVE_TOKEN_FILE=token_g_drive.json
+```
+9. The next step is to setup the Gdrive directories in which the documents will be uploaded in when they are classified. Login to your Googledrive and make new directories.
 I personally have 8 directories which are:
 
-```1. Education, 2. Entertainment, 3. Finance, 4.Health, 5.Home, 6.Personal, 7.Work, 8.Default```
+```md
+1. Education        5. Home  
+2. Entertainment    6. Personal
+3. Finance          7. Work
+4. Health           8. Default
+```
 
-(If the document can't be classified it ends up in the default folder)
+10. Once that is done, Navigate to the `Setup` directory and run the `setup.go`.
+
+```sh
+cd setup
+go run setup.go
+```
+
+11. You will be promted to setup you Gmail and Gdrive credentials on CLI. Click on the link that is outputed on the CLI.
+12. Choose the specific google profile you want to use for your GMAIL and follow the instructions.
+13. You will get to a localhost connection error as below after finishing with the setup:
+
+<Image
+  className="w-full rounded-xl"
+  alt="backlit computer"
+  src="/static/images/posts/localhosterror.png"
+  layout="responsive"
+  width={250}
+  height={150}
+/>
+
+14. Copy the URL from your browser and it will look like the snippet below. As you can see the `scope` path parameter is `4444444xxxx` (Look for the `code=4444444xxxx`, but yours will be different). Copy that, paste it on your command line and press enter.
+
+```sh
+http://localhost/?state=state-token&code=4444444xxxxx&scope=https://www.googleapis.com/auth/gmail.readonly
+```
+15. You will repeat the step 11-14 again for setting up google drive. (There will be a prompt on the command line for setting up google drive).
+16. Once this is done it will create the `pkg/common/directories.json`, `token_gmail.json` and `token_g_drive.json` files.
 
 
+### Running the code
 
-### Separate Repos (Separate Repositories):
+1. Once this is done, Navigate to the root folder and run the `main.go`
+```sh
+go mod tidy
+go run main.go
+```
 
-On the other hand, separate repos are like organizing your stuff into different boxes or drawers. In software terms, it means dividing your project into smaller parts, with each part having its own dedicated place or "repository." Each box or drawer (repository) contains a specific part of your project, and different teams or developers can work on these parts independently.
+2. The code is setup to run a cron every midnight
 
-Separate Repos: The Isolated 
 
-Scalability: Individual repos can be scaled independently. You can allocate resources and attention where needed without affecting other projects, making it easier to manage growth.
-Isolation: Separate repos offer isolation for distinct projects or components. This is particularly useful for large organizations juggling diverse projects. Each repo operates independently, reducing interference.
-
-Challenges in Separate Repos
-Dependency Nightmares: Managing dependencies across multiple repos can become a logistical challenge, requiring vigilance to ensure compatibility.
-Smaller Builds: Smaller, separate repos often boast shorter build times. This translates to faster development cycles and quicker feedback, keeping developers productive and focused.
-Code Duplication: Similar code may be duplicated across repos, leading to maintenance issues and potential inconsistencies.
-
-Ultimately, the choice between a mono-repo and separate repos hinges on your project's intricacies, team size, and development philosophy. Some find solace in the unity of a mono-repo, while others prefer the freedom of separate repos. Whatever you choose, remember that the success of your development efforts depends more on how well you manage and maintain your chosen structure than the structure itself.
