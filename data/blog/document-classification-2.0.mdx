@@ -1,0 +1,36 @@
+---
+title: The birth of doc-classify
+tags: ['Golang', 'AWS', 'Next.Js']
+date: '2024-06-08'
+images: ['/static/images/posts/documents_card.png']
+authors: ['zwanga']
+draft: false
+canonicalUrl: https://www.google.com
+---
+
+<Image
+  className="w-full rounded-xl"
+  alt="backlit computer"
+  src="/static/images/posts/documents_card.png"
+  layout="responsive"
+  width={450}
+  height={250}
+/>
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+Towards the end of last year, I previewed the blog [The Gmail AI Attachment Document Classifier](https://www.zwangamukwevho.co.za/blog/document-classification) where I first introduced the idea behind the Gmail AI classifier and how I had achieved a prototype of this application.
+
+I had always intended to automate the whole process of getting the app started to further allow my not-too-technical friends to use this small application that I am so proud of. However, like 90% of people who have an idea, I just sat on it and didn't do it.
+
+### Services Set-up
+
+I have now somewhat managed to automate this process by adding a `Next.js` web framework as a simple user interface for categorizing emails and handling authentication with Google services (namely Gmail and Google Drive). This was the very first time I had created a front-end application from scratch without using a template, and I must say that `Next.js` had a short learning curve for a developer who is not very experienced with the front end. The combination of `Next.js`, NextUI, and Tailwind CSS for components and styling made it easy to quickly set up the website. The out-of-the-box components provided by NextUI are brilliant and make for quick development.
+
+The backend system is still the same, written in `Golang`. I had to expose the API endpoints so that the front-end application could communicate with the backend. I used the [Gin Web Framework](https://pkg.go.dev/github.com/gin-gonic/gin) for this. I would recommend this framework when setting up a Golang API; it's easy to set up and has a shorter learning curve compared to others. This [Medium](https://medium.com/@hasanshahjahan/a-deep-dive-into-gin-chi-and-mux-in-go-33b9ad861e1b#:~:text=Gin%2C%20Chi%2C%20and%20Mux%20are,a%20wide%20range%20of%20applications) article is perfect for comparing different API frameworks you can use in Golang, so you can find one that suits your taste.
+
+### Architecture Set-up
+
+Setting up the architecture for hosting both services was one of the interesting and fun tasks I encountered. I decided to go the self-managed route where I got a server, set up, and deployed both my services. For the back-end service, I manually installed Golang on the server and ran the application. Service discovery was not a problem as I could simply expose my API endpoints on a specific port locally on the server. I wrote a small bash script to allow the Golang application to be self-healing whenever it crashes. I followed the same route with the front-end service.
+
+The final step was how to expose this application to external users. I followed the user-to-application journey and set up each component accordingly. The first step was to get a domain name for the website, which is the first point of contact with the application. I got the domain [doc-classification.co.za](https://doc-classification.co.za/) from [GoDaddy](https://www.godaddy.com/). The next step was setting up a static IP address for the server to bind with the domain. Since I am using an `AWS` EC2 instance, I got an Elastic IP address from `AWS`. I had to update the DNS records on GoDaddy to point the domain to this IP address. The final step was setting up how the request is routed from the internet to the `Next.js` application and then to the backend server. For this, I made use of Nginx as a reverse proxy.
