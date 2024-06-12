@@ -21,6 +21,9 @@ module.exports = {
         13: '3.25rem',
         14: '3.5rem',
       },
+      height: {
+        100: '420px',
+      },
       fontFamily: {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
       },

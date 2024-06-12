@@ -1,9 +1,17 @@
 const projectsData = [
   {
+    name: 'Doc-Classification',
+    description: 'An Application that automatically saves and classifies gmail attachment in gdrive.',
+    img: '/static/images/posts/documents_card.png',
+    tech: ['Golang ', 'Next.js'],
+    githuburl: 'https://github.com/ZwangaMukwevho/Price-Comp',
+    projecturl: 'https://doc-classification.co.za',
+  },
+  {
     name: 'IN-TOUCH',
     description: 'An MVP for online document certification in South Africa.',
     img: '/static/images/projects/intouchLogo.png',
-    tech: ['Javascript', 'Node', 'Next', 'Firebase'],
+    tech: [ 'Next.js', 'Firebase'],
     githuburl: 'https://github.com/ZwangaMukwevho/intouch3',
     projecturl: 'https://in-touch-sa.co.za/',
   },

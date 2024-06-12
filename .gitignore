@@ -43,3 +43,5 @@ playwright-report/
 .vscode
 
 .env.local
+
+Dockerfile
