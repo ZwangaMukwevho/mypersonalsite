@@ -1,0 +1,65 @@
+---
+title: Automating the provisioning of Doc-Classification
+tags: ['AWS', 'Vagrant', 'Terraform', 'Bash']
+date: '2025-03-26'
+images: ['/static/images/posts/iaac.png']
+authors: ['zwanga']
+draft: false
+canonicalUrl: https://www.google.com
+---
+
+<Image
+  className="w-full rounded-xl"
+  alt="backlit computer"
+  src="/static/images/posts/iaac.png"
+  layout="responsive"
+  width={450}
+  height={250}
+/>
+
+<TOCInline toc={props.toc} asDisclosure toHeading={3} />
+
+# Automating Server Provisioning with Vagrant and Terraform
+
+Now that I've set up a front-end for my site, I wanted to ensure that I could re-provision the entire setup on a different server—whether cloud-based or on-premises—without manual intervention. This process is similar to configuring `User Data` for an EC2 instance, allowing the installation of necessary dependencies when the instance is provisioned or started.
+
+To achieve this, I followed a two-step approach:
+
+1. **Local Development and Testing**: I used Vagrant to provision a virtual machine on my local PC, allowing me to test the installation and configuration scripts in a controlled environment before deploying them to the cloud.
+2. **Cloud Deployment**: Once the provisioning script was successfully tested locally, I transferred it to a Terraform repository, which automated the setup of an EC2 instance with the same configuration on AWS.
+
+This structured approach ensured that my infrastructure setup was both repeatable and cost-effective.
+
+## Development Process
+
+Since an EC2 instance is essentially a cloud-based server, I didn't want to test my provisioning script directly on an EC2 instance, as that would require launching a new instance every time I made changes. Instead, I leveraged [`Vagrant`](https://www.vagrantup.com/).
+
+For those unfamiliar with Vagrant, it is a tool that enables automatic provisioning of virtual machines using Infrastructure as Code (IaC). It allows you to define a `Vagrantfile` (written in Ruby), where you can specify:
+
+- The machine's base image
+- Architectural specifications like CPU, RAM, etc.
+- Installation steps for required dependencies during provisioning
+
+This made Vagrant the perfect tool for testing my provisioning steps locally before deploying them on AWS, ultimately saving costs. You can check out my Vagrantfile [here](#).
+
+## Cloud Setup Process
+
+## test
+
+I like to think of [`Terraform`](https://www.terraform.io/) as the cloud equivalent of Vagrant. While the syntax differs, the core logic remains the same. Terraform uses `HashiCorp Configuration Language` (HCL) to define infrastructure and allows you to automatically provision cloud resources.
+
+Since Terraform is designed for cloud infrastructure rather than on-premises environments, you need to specify a cloud provider. In my case, I used `AWS`. With HCL, I provisioned an EC2 instance and executed the same installation script used in the [Development Process](#development-process) above to install dependencies such as `Nginx`, `Node.js`, and `PM2`. Once I had successfully set up the provisioning script locally using Vagrant, I was able to copy it over to a repository that used Terraform for cloud deployment. This made it easy to transition from local testing to cloud provisioning.
+
+The related github repo is: [doc-classification-ops](https://github.com/ZwangaMukwevho/doc-classification-ops)
+
+### Handling Private Repositories
+
+One challenge I faced was ensuring that the two repositories my project depended on were automatically cloned during the provisioning process. Unfortunately, there was no straightforward solution. I had to:
+
+1. Generate a private SSH key
+2. Manually add it to the repository
+3. Modify the provisioning steps to reference this private key
+
+This allowed GitHub to authenticate and clone the repository as part of the provisioning process.
+
+By using **Vagrant** for local testing and **Terraform** for cloud deployment, I streamlined my server provisioning workflow, making it both repeatable and cost-effective.
