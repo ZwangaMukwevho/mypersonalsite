@@ -44,22 +44,33 @@ This made Vagrant the perfect tool for testing my provisioning steps locally bef
 
 ## Cloud Setup Process
 
-## test
+I like to think of [`Terraform`](https://www.terraform.io/) as the cloud equivalent of Vagrant. While the syntax differs, the core logic remains the same. Terraform uses `HashiCorp Configuration Language` (HCL) to define infrastructure and allows you to automatically provision cloud resources.
+
+Well since this is a cloud setup, and like I've mentioned before I have been using an EC2 instance to host my website. I need ot architect my terraform such that the setup will work on AWS. In terraform this would mean defnining my provider to point to the AWS cloud, an additional step you need to ensure is that your terraform points to your necessary AWS account. What I would recommend for this is  creating an AWS IAM user and give it the writes to create an EC2 instance, and rights to also write to to an S3 bucket. (Terraform keeps a list state of all the changes ou make on your project (like a `package-lock.json`) file). I also recommend keeping this in an S3 bucket so if you were ever to run your config at a different location you have access to this.
+
+Since terraform is linked to cloud, and wisth working on the cloud, there are associated costs of this. I found a nice tool to test this locally without working on online. [LocalStack](https://www.localstack.cloud/) have a variety of tools that allow you to localise your AWS environment. They have a tool that is a wrapper around terraform that allows you to run your terraform configuration against their `LocalStack` code. You can read more about it [here](https://docs.localstack.cloud/user-guide/integrations/terraform/)
+
+The above should give you most of the necessary context to check out the code on my repository here: [doc-classification-ops](https://github.com/ZwangaMukwevho/doc-classification-ops). The basic structure of it is that there's a:
+- `instance.tf`: defines the configuration for the EC2 instance.
+- `provider.tf`: specifies the cloud provider I am using. I have left comments on how you can let this point to localStack.
+- `backend.tf`: specifies where the terraform state should live. I have also left comments on you can let this point to LocalStack as well.
+- `variables.tf`: This is where I defined all the terraform variables I was using.
+
+The above repo just allows me to install the necessary dependencies I need for setting up the `doc-classifcication` application. The installation of the necessary dependencies on the application when provisioning the intance was through the `scripts/cloud-init` yaml file. Which uses [CloudInit](https://cloud-init.io/) to provide user data to the EC2 instance whilst provisioning it.. All I need to do is the cloning of the repositories, installing the application which should be straightforward and that should be me up and running.
 
 I like to think of [`Terraform`](https://www.terraform.io/) as the cloud equivalent of Vagrant. While the syntax differs, the core logic remains the same. Terraform uses `HashiCorp Configuration Language` (HCL) to define infrastructure and allows you to automatically provision cloud resources.
 
-Since Terraform is designed for cloud infrastructure rather than on-premises environments, you need to specify a cloud provider. In my case, I used `AWS`. With HCL, I provisioned an EC2 instance and executed the same installation script used in the [Development Process](#development-process) above to install dependencies such as `Nginx`, `Node.js`, and `PM2`. Once I had successfully set up the provisioning script locally using Vagrant, I was able to copy it over to a repository that used Terraform for cloud deployment. This made it easy to transition from local testing to cloud provisioning.
+Well since this is a cloud setup, and like I've mentioned before I have been using an EC2 instance to host my website. I need ot architect my terraform such that the setup will work on AWS. In terraform this would mean defnining my provider to point to the AWS cloud, an additional step you need to ensure is that your terraform points to your necessary AWS account. What I would recommend for this is  creating an AWS IAM user and give it the writes to create an EC2 instance, and rights to also write to to an S3 bucket. (Terraform keeps a list state of all the changes ou make on your project (like a `package-lock.json`) file). I also recommend keeping this in an S3 bucket so if you were ever to run your config at a different location you have access to this.
 
-The related github repo is: [doc-classification-ops](https://github.com/ZwangaMukwevho/doc-classification-ops)
+Since terraform is linked to cloud, and wisth working on the cloud, there are associated costs of this. I found a nice tool to test this locally without working on online. [LocalStack](https://www.localstack.cloud/) have a variety of tools that allow you to localise your AWS environment. They have a tool that is a wrapper around terraform that allows you to run your terraform configuration against their `LocalStack` code. You can read more about it [here](https://docs.localstack.cloud/user-guide/integrations/terraform/)
 
-### Handling Private Repositories
+The above should give you most of the necessary context to check out the code on my repository here: [doc-classification-ops](https://github.com/ZwangaMukwevho/doc-classification-ops). The basic structure of it is that there's a:
+- `instance.tf`: defines the configuration for the EC2 instance.
+- `provider.tf`: specifies the cloud provider I am using. I have left comments on how you can let this point to localStack.
+- `backend.tf`: specifies where the terraform state should live. I have also left comments on you can let this point to LocalStack as well.
+- `variables.tf`: This is where I defined all the terraform variables I was using.
 
-One challenge I faced was ensuring that the two repositories my project depended on were automatically cloned during the provisioning process. Unfortunately, there was no straightforward solution. I had to:
+The above repo just allows me to install the necessary dependencies I need for setting up the `doc-classifcication` application. The installation of the necessary dependencies on the application when provisioning the intance was through the `scripts/cloud-init` yaml file. Which uses [CloudInit](https://cloud-init.io/) to provide user data to the EC2 instance whilst provisioning it.. All I need to do is the cloning of the repositories, installing the application which should be straightforward and that should be me up and running.
 
-1. Generate a private SSH key
-2. Manually add it to the repository
-3. Modify the provisioning steps to reference this private key
-
-This allowed GitHub to authenticate and clone the repository as part of the provisioning process.
-
-By using **Vagrant** for local testing and **Terraform** for cloud deployment, I streamlined my server provisioning workflow, making it both repeatable and cost-effective.
+### Potential Improvement
+A potential improvement would be to automate the last step I mentioned above, adding a step to create the project directories, clone the project and have everything installed. Keep an eye out on thiswebsite. Next time you pop by I would have set it up.
