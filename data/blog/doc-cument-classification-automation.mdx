@@ -1,6 +1,6 @@
 ---
 title: Automating the provisioning of Doc-Classification
-tags: ['AWS', 'Vagrant', 'Terraform', 'Bash']
+tags: ['AWS', 'Vagrant', 'Terraform', 'LocalStack']
 date: '2025-03-26'
 images: ['/static/images/posts/iaac.png']
 authors: ['zwanga']
@@ -32,31 +32,20 @@ This structured approach ensured that my infrastructure setup was both repeatabl
 
 ## Development Process
 
-Since an EC2 instance is essentially a cloud-based server, I didn't want to test my provisioning script directly on an EC2 instance, as that would require launching a new instance every time I made changes. Instead, I leveraged [`Vagrant`](https://www.vagrantup.com/).
+I initially wanted to test the packages I'd use to install the necessary dependencies on my EC2 instance (running an Ubuntu 20 base image). However, I didn’t want to spin up a new EC2 instance every time I made a change just to check if everything worked. So, I decided to use Vagrant (link).
 
-For those unfamiliar with Vagrant, it is a tool that enables automatic provisioning of virtual machines using Infrastructure as Code (IaC). It allows you to define a `Vagrantfile` (written in Ruby), where you can specify:
+Setting it up was a bit of a hassle since I'm on macOS. I usually prefer VirtualBox as a hypervisor, but when I started installing Vagrant, I found out they were dropping support for VirtualBox. That meant I had to switch to VMware, which I'm not very familiar with, and that caused some issues at first—but I eventually got everything sorted out.
 
+If you want to set up Vagrant, you can follow the official installation guide [here](https://developer.hashicorp.com/vagrant/docs/installation).
+
+The nice thing about Vagrant is that you mostly just work with a single file called the Vagrantfile—kind of like a Dockerfile—where you specify your base image, VM specs (CPU, memory, etc.), and any provisioning steps you need. Feel free to check out my Vagrantfile [here](https://gist.github.com/ZwangaMukwevho/f924cac57a6475fdd4876157a1e5793a) as an example.
+
+It includes:
 - The machine's base image
-- Architectural specifications like CPU, RAM, etc.
+- Architectural specs like CPU and RAM
 - Installation steps for required dependencies during provisioning
 
-This made Vagrant the perfect tool for testing my provisioning steps locally before deploying them on AWS, ultimately saving costs. You can check out my Vagrantfile [here](#).
-
 ## Cloud Setup Process
-
-I like to think of [`Terraform`](https://www.terraform.io/) as the cloud equivalent of Vagrant. While the syntax differs, the core logic remains the same. Terraform uses `HashiCorp Configuration Language` (HCL) to define infrastructure and allows you to automatically provision cloud resources.
-
-Well since this is a cloud setup, and like I've mentioned before I have been using an EC2 instance to host my website. I need ot architect my terraform such that the setup will work on AWS. In terraform this would mean defnining my provider to point to the AWS cloud, an additional step you need to ensure is that your terraform points to your necessary AWS account. What I would recommend for this is  creating an AWS IAM user and give it the writes to create an EC2 instance, and rights to also write to to an S3 bucket. (Terraform keeps a list state of all the changes ou make on your project (like a `package-lock.json`) file). I also recommend keeping this in an S3 bucket so if you were ever to run your config at a different location you have access to this.
-
-Since terraform is linked to cloud, and wisth working on the cloud, there are associated costs of this. I found a nice tool to test this locally without working on online. [LocalStack](https://www.localstack.cloud/) have a variety of tools that allow you to localise your AWS environment. They have a tool that is a wrapper around terraform that allows you to run your terraform configuration against their `LocalStack` code. You can read more about it [here](https://docs.localstack.cloud/user-guide/integrations/terraform/)
-
-The above should give you most of the necessary context to check out the code on my repository here: [doc-classification-ops](https://github.com/ZwangaMukwevho/doc-classification-ops). The basic structure of it is that there's a:
-- `instance.tf`: defines the configuration for the EC2 instance.
-- `provider.tf`: specifies the cloud provider I am using. I have left comments on how you can let this point to localStack.
-- `backend.tf`: specifies where the terraform state should live. I have also left comments on you can let this point to LocalStack as well.
-- `variables.tf`: This is where I defined all the terraform variables I was using.
-
-The above repo just allows me to install the necessary dependencies I need for setting up the `doc-classifcication` application. The installation of the necessary dependencies on the application when provisioning the intance was through the `scripts/cloud-init` yaml file. Which uses [CloudInit](https://cloud-init.io/) to provide user data to the EC2 instance whilst provisioning it.. All I need to do is the cloning of the repositories, installing the application which should be straightforward and that should be me up and running.
 
 I like to think of [`Terraform`](https://www.terraform.io/) as the cloud equivalent of Vagrant. While the syntax differs, the core logic remains the same. Terraform uses `HashiCorp Configuration Language` (HCL) to define infrastructure and allows you to automatically provision cloud resources.
 
