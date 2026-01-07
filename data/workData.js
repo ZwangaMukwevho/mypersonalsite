@@ -1,15 +1,18 @@
 const workData = [
   {
-    company: 'Tripco.Africa',
+    company: 'Tripco',
     role: [
       {
         title: 'Fullstack Developer',
         monthYearStart: 'Sep 2023',
         monthYearEnd: 'Present',
         jobDescription: [
-          'Designed and implemented a robust image upload system through a front-end interface, seamlessly transferring images to Amazon S3 cloud storage. Implemented caching mechanisms to ensure rapid image retrieval for optimal user experience.',
-          'Collaborated on the development of backend APIs using the PHP Slim framework, contributing to the creation of efficient and scalable web services',
-          'Demonstrated proficiency in front-end development by working with technologies such as Vue.js, JavaScript, jQuery, and HTML templates like Twig.',
+          'Designed and implemented a robust image upload system through a front-end interface, seamlessly transferring images to Amazon S3 cloud storage. Implemented caching using IMGIX mechanisms to ensure rapid image retrieval for optimal user experience.',
+          'Built a Python 3 service to ingest proof-of-payment emails, validate 1,000+ EFT payments/day, and archive results to AWS S3.',
+          'Maintained a C++ price management service to quickly aggregate pricing data from a MySQL database and external platforms, ensuring fast updates for rapidly changing prices', 
+          'Developed a TCP/IP SFTP PHP service via proxy to fetch 500+ monthly cost statements for financial analysis and reconciliation.', 
+          'Built and containerized services with Docker, orchestrated with Nomad, secured secrets with Vault, and automated CI/CD using GitHub Actions.',
+          'Migrated an old application from PHP, MySQL, and Vue (JavaScript)  to the Laravel framework, with the front-end rebuilt in React (Typescript).'
         ],
       },
     ],
@@ -22,12 +25,12 @@ const workData = [
         monthYearStart: 'Jan 2022',
         monthYearEnd: 'Aug 2023',
         jobDescription: [
-          'Developed, maintained, and tested Golang and Scala APIs within a microservices architecture.',
-          'Worked on a project focused on migrating data from MongoDB to AWS DocumentDB',
-          'Authored comprehensive automated tests for APIs to ensure code reliability and functionality.',
-          'Configured CI/CD pipelines and optimized infrastructure through YAML configurations for efficient code deployment',
+          'Migrated infrastructure management from on-prem Ansible to cloud-based Terraform, boosting scalability and cutting provisioning time by 30%',
+          'Monitored application uptime in Grafana (fed by Prometheus metrics) and centralized logs with the ELK (Elastic, Logstash, Kibana)  stack',
+          'Set up CI/CD pipelines in GitLab for building, testing, and deploying artifacts to Artifactory, enabling containerization with Docker and deployment to Kubernetes',
           'Leveraged Rancher for in-depth investigation and troubleshooting of services running on Docker within a microservices architecture.',
-          'Proficiently managed and leveraged Microsoft SQL Server and MariaDB, excelling in tasks such as view creation, stored procedure investigation, and data querying.',
+          'Migrated a MongoDB dataset of over 10,000 documents from on-premises to AWS, enabling secure access via an EC2 jump box (bastion host).',
+          'Migrated APIs from Scala to Golang in an event-driven RabbitMQ setup, shrinking Docker images by 40 % and accelerating Helm-managed Kubernetes start-up times.'
         ],
       },
     ],
